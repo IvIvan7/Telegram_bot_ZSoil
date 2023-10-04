@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-
+import random
 def find_name_by_weekday(excel_file):
     # Загрузка данных из Excel файла
     df = pd.read_excel(excel_file)
@@ -27,9 +27,12 @@ def find_name_by_weekday(excel_file):
     if not matching_row.empty:
         # Извлечение имени из соответствующей строки
         name = matching_row.iloc[0]['ФИО']  # Замените 'Имя' на название соответствующего столбца
-        return name
+        random_cng = random.choice(df["ПОЗДРАВЛЕНИЕ"])
+        cng = f'{name} {random_cng}'
+        nam = f'Сегодня день рождения у {name}'
+        return cng, nam
     else:
-        a = f'Совпадение не найдено'
+        a = f'Сегодня никто не празднует день рождения'
         return a # Если совпадение не найдено
 
 
