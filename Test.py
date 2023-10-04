@@ -1,27 +1,28 @@
 import pandas as pd
-from datetime import datetime
+from datetime import date
 import random
 def find_name_by_weekday(excel_file):
     # Загрузка данных из Excel файла
     df = pd.read_excel(excel_file)
 
-    # Получение текущей недели и дня недели
-    current_date = datetime.now().date()
-    current_week = current_date.isocalendar()[1]  # Текущая неделя
-    current_day = current_date.weekday()  # Текущий день недели (0 - понедельник, 6 - воскресенье)
+    # Получение текущего месяца и дня
+    current_date = date.today()
+    current_week = current_date.month  # Текущий месяц
+    current_day = current_date.day  # Текущий день
+
 
     # Функция для извлечения номера недели и дня недели из даты в столбце "ДАТА"
     def extract_weekday(row):
         date_in_column = row['ДАТА']
-        date_week = date_in_column.isocalendar()[1]
-        date_day = date_in_column.weekday()
+        date_week = date_in_column.month
+        date_day = date_in_column.day
         return date_week, date_day
 
-    # Применение функции extract_weekday к каждой строке и создание новых столбцов 'Неделя' и 'День'
-    df[['Неделя', 'День']] = df.apply(extract_weekday, axis=1, result_type='expand')
+    # Применение функции extract_weekday к каждой строке и создание новых столбцов 'Месяц' и 'День'
+    df[['Месяц', 'День']] = df.apply(extract_weekday, axis=1, result_type='expand')
 
     # Поиск строки, в которой неделя и день недели совпадают с текущей неделей и днем недели
-    matching_row = df[(df['Неделя'] == current_week) & (df['День'] == current_day)]
+    matching_row = df[(df['Месяц'] == current_week) & (df['День'] == current_day)]
 
     # Проверка, найдена ли соответствующая строка
     if not matching_row.empty:
@@ -34,6 +35,7 @@ def find_name_by_weekday(excel_file):
     else:
         a = f'Сегодня никто не празднует день рождения'
         return a # Если совпадение не найдено
+
 
 
 
